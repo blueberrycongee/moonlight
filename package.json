@@ -2,7 +2,7 @@
   "name": "moonlight",
   "version": "0.1.0",
   "description": "A GUI wrapper for Kimi CLI",
-  "main": ".vite/build/main.js",
+  "main": ".vite/build/index.js",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "electron-forge start",

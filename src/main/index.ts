@@ -46,6 +46,14 @@ const createWindow = () => {
     );
   }
 
+  mainWindow.webContents.on("did-fail-load", (_e, code, desc) => {
+    console.error("Failed to load:", code, desc);
+  });
+
+  mainWindow.webContents.on("render-process-gone", (_e, details) => {
+    console.error("Renderer process gone:", details);
+  });
+
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
