@@ -8,8 +8,9 @@
     "dev": "electron-forge start",
     "build": "electron-forge make",
     "package": "electron-forge package",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "npm rebuild better-sqlite3 && vitest run",
+    "test:watch": "vitest",
+    "postinstall": "electron-rebuild"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.10",
