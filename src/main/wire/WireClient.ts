@@ -13,6 +13,7 @@ import type {
   WireOptions,
   ApprovalRequest,
   ApprovalDecision,
+  JsonRpcRequest,
   JsonRpcSuccessResponse,
   JsonRpcErrorResponse,
 } from "../../shared/types/wire";
@@ -96,10 +97,7 @@ export class WireClient extends EventEmitter {
     this.approvalHandler = handler;
   }
 
-  private sendRequest(request: {
-    id: number | string;
-    [key: string]: unknown;
-  }): Promise<unknown> {
+  private sendRequest(request: JsonRpcRequest): Promise<unknown> {
     return new Promise((resolve, reject) => {
       this.pending.set(request.id, { resolve, reject });
       this.process!.stdin!.write(serialize(request));
