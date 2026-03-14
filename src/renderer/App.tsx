@@ -1,4 +1,5 @@
 import { MainLayout } from "./components/layout/MainLayout";
+import { ThreadView } from "./components/thread/ThreadView";
 import { useThemeStore } from "./stores/useThemeStore";
 import { useWireEvents } from "./hooks/useWireEvents";
 
@@ -11,16 +12,7 @@ function App() {
       className={`h-screen w-screen bg-surface-dark select-none ${isDark ? "dark" : ""}`}
     >
       <MainLayout>
-        <div className="h-full flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-4xl font-semibold text-text-inverse tracking-tight">
-              Moonlight
-            </h1>
-            <p className="mt-2 text-sm text-text-secondary">
-              A GUI wrapper for Kimi CLI
-            </p>
-          </div>
-        </div>
+        <ThreadView />
       </MainLayout>
     </div>
   );
