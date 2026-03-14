@@ -1,8 +1,10 @@
 import { MainLayout } from "./components/layout/MainLayout";
 import { useThemeStore } from "./stores/useThemeStore";
+import { useWireEvents } from "./hooks/useWireEvents";
 
 function App() {
   const { isDark } = useThemeStore();
+  useWireEvents();
 
   return (
     <div
