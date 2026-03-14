@@ -55,6 +55,26 @@ export class MoonlightDB {
       .run(project.id, project.name, project.path, project.createdAt);
   }
 
+  getProjectByPath(
+    dirPath: string,
+  ): (Project & { threads: string[] }) | undefined {
+    const row = this.db
+      .prepare("SELECT * FROM projects WHERE path = ?")
+      .get(dirPath) as
+      | { id: string; name: string; path: string; createdAt: number }
+      | undefined;
+    if (!row) return undefined;
+
+    const threadRows = this.db
+      .prepare("SELECT id FROM threads WHERE projectId = ? ORDER BY createdAt")
+      .all(row.id) as { id: string }[];
+
+    return {
+      ...row,
+      threads: threadRows.map((t) => t.id),
+    };
+  }
+
   getProject(id: string): (Project & { threads: string[] }) | undefined {
     const row = this.db
       .prepare("SELECT * FROM projects WHERE id = ?")

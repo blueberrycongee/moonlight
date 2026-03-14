@@ -1,13 +1,27 @@
 import { app, BrowserWindow } from "electron";
-import path from "path";
+import path from "node:path";
+import os from "node:os";
+import { MoonlightDB } from "./db/database";
+import { ThreadManager } from "./managers/ThreadManager";
+import { ProcessManager } from "./managers/ProcessManager";
+import { registerIpcHandlers } from "./ipc";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+const DATA_DIR = path.join(os.homedir(), ".moonlight");
+
+let mainWindow: BrowserWindow | null = null;
+let db: MoonlightDB;
+let threadManager: ThreadManager;
+let processManager: ProcessManager;
+
+const getWindow = (): BrowserWindow | null => mainWindow;
+
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 800,
@@ -29,11 +43,25 @@ const createWindow = () => {
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
     );
   }
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 };
 
-app.on("ready", createWindow);
+app.on("ready", () => {
+  db = new MoonlightDB(DATA_DIR);
+  threadManager = new ThreadManager(db, DATA_DIR);
+  processManager = new ProcessManager(threadManager, getWindow);
+
+  registerIpcHandlers({ db, threadManager, processManager, getWindow });
+
+  createWindow();
+});
 
 app.on("window-all-closed", () => {
+  processManager.stopAll();
+  db.close();
   if (process.platform !== "darwin") {
     app.quit();
   }
