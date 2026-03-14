@@ -22,15 +22,15 @@ export function Sidebar() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-surface-dark/95 border-r border-border">
+    <div className="h-full flex flex-col bg-surface border-r border-border">
       {/* Project selector */}
       <div className="p-3">
         <button
           onClick={selectDirectory}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 text-left transition-colors"
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-hover text-left transition-colors"
         >
           <FolderOpen size={16} className="text-brand shrink-0" />
-          <span className="text-sm text-text-inverse truncate">
+          <span className="text-sm text-text-primary truncate">
             {project?.name ?? "Select project..."}
           </span>
         </button>
@@ -44,7 +44,7 @@ export function Sidebar() {
           </span>
           <button
             onClick={handleCreateThread}
-            className="p-1 rounded hover:bg-white/10 text-text-secondary hover:text-text-inverse transition-colors"
+            className="p-1 rounded hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors"
           >
             <Plus size={14} />
           </button>
@@ -58,7 +58,7 @@ export function Sidebar() {
               className={`w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-left transition-colors ${
                 activeThreadId === thread.id
                   ? "bg-brand text-white"
-                  : "text-text-inverse hover:bg-white/10"
+                  : "text-text-primary hover:bg-surface-hover"
               }`}
             >
               <MessageSquare size={14} className="shrink-0" />

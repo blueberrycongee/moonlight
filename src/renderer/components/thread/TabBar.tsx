@@ -8,7 +8,7 @@ export function TabBar() {
   if (openTabs.length === 0) return null;
 
   return (
-    <div className="flex border-b border-white/10 overflow-x-auto">
+    <div className="flex border-b border-border overflow-x-auto">
       {openTabs.map((tabId) => {
         const thread = threads.find((t) => t.id === tabId);
         if (!thread) return null;
@@ -20,11 +20,11 @@ export function TabBar() {
             onClick={() => setActiveThread(tabId)}
             className={`flex items-center gap-1.5 px-3 py-2 text-sm shrink-0 transition-opacity ${
               isActive
-                ? "bg-white/5 border-b-2 border-brand opacity-100"
+                ? "bg-surface border-b-2 border-brand opacity-100"
                 : "opacity-60 hover:opacity-100"
             }`}
           >
-            <span className="max-w-[120px] truncate text-text-inverse">
+            <span className="max-w-[120px] truncate text-text-primary">
               {thread.title}
             </span>
             <span
@@ -33,7 +33,7 @@ export function TabBar() {
                 e.stopPropagation();
                 closeTab(tabId);
               }}
-              className="ml-1 rounded p-0.5 hover:bg-white/10 text-text-secondary"
+              className="ml-1 rounded p-0.5 hover:bg-surface-hover text-text-secondary"
             >
               <X size={14} />
             </span>

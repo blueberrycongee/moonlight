@@ -36,7 +36,7 @@ export function MessageList({ messages, streamingMessage }: MessageListProps) {
           >
             <div
               className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
-                isUser ? "bg-brand text-white" : "bg-white/5 text-text-inverse"
+                isUser ? "bg-brand text-white" : "bg-surface text-text-primary"
               }`}
             >
               {msg.parts.map((part, i) => {

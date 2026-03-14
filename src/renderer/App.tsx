@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div
-      className={`h-screen w-screen bg-surface-dark select-none ${isDark ? "dark" : ""}`}
+      className={`h-screen w-screen bg-background select-none ${isDark ? "dark" : ""}`}
     >
       <MainLayout>
         <ThreadView />

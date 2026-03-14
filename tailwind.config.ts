@@ -2,26 +2,25 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./src/renderer/**/*.{ts,tsx,html}"],
-  darkMode: "class",
   theme: {
     extend: {
       colors: {
+        background: "rgb(var(--background) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        "surface-hover": "rgb(var(--surface-hover) / <alpha-value>)",
+        border: "rgb(var(--border) / <alpha-value>)",
+        "border-muted": "rgb(var(--border-muted) / <alpha-value>)",
+        "text-primary": "rgb(var(--text-primary) / <alpha-value>)",
+        "text-secondary": "rgb(var(--text-secondary) / <alpha-value>)",
+        "text-muted": "rgb(var(--text-muted) / <alpha-value>)",
         brand: {
-          DEFAULT: "#0071e3",
-          hover: "#0051a2",
+          DEFAULT: "rgb(var(--brand) / <alpha-value>)",
+          hover: "rgb(var(--brand-hover) / <alpha-value>)",
         },
-        surface: {
-          dark: "#1d1d1f",
-          light: "#fbfbfd",
-        },
-        border: {
-          DEFAULT: "#e5e5e7",
-        },
-        text: {
-          primary: "#1d1d1f",
-          secondary: "#6e6e73",
-          inverse: "#f5f5f7",
-        },
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        success: "rgb(var(--success) / <alpha-value>)",
+        warning: "rgb(var(--warning) / <alpha-value>)",
+        danger: "rgb(var(--danger) / <alpha-value>)",
       },
     },
   },

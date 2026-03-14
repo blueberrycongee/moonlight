@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+:root {
+  --background: 13 17 23;
+  --surface: 22 27 34;
+  --surface-hover: 28 33 40;
+  --border: 48 54 61;
+  --border-muted: 33 38 45;
+  --text-primary: 230 237 243;
+  --text-secondary: 139 148 158;
+  --text-muted: 72 79 88;
+  --brand: 0 113 227;
+  --brand-hover: 0 81 162;
+  --accent: 88 166 255;
+  --success: 63 185 80;
+  --warning: 210 153 34;
+  --danger: 248 81 73;
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--text-primary));
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--border));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--text-muted));
+}
+
+/* Selection */
+::selection {
+  background: rgba(var(--brand), 0.3);
+}

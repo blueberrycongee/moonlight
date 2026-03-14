@@ -43,7 +43,7 @@ export function InputBar({ onSend, disabled }: InputBarProps) {
   const canSend = text.trim().length > 0 && !disabled;
 
   return (
-    <div className="border-t border-white/10 p-3 flex items-end gap-2">
+    <div className="border-t border-border p-3 flex items-end gap-2">
       <textarea
         ref={textareaRef}
         value={text}
@@ -52,7 +52,7 @@ export function InputBar({ onSend, disabled }: InputBarProps) {
         disabled={disabled}
         placeholder="Send a message... (Cmd+Enter to send)"
         rows={1}
-        className="flex-1 resize-none bg-white/5 rounded-lg px-3 py-2 text-sm text-text-inverse placeholder:text-text-secondary outline-none focus:ring-1 focus:ring-brand"
+        className="flex-1 resize-none bg-surface rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary outline-none focus:ring-1 focus:ring-brand"
       />
       <button
         onClick={send}

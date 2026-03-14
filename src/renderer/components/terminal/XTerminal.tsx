@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
+import { THEME } from "../../styles/theme";
 
 interface XTerminalProps {
   threadId: string;
@@ -22,19 +23,19 @@ export function XTerminal({ threadId, workDir }: XTerminalProps) {
       fontSize: 13,
       fontFamily: "Menlo, Monaco, 'Courier New', monospace",
       theme: {
-        background: "#1d1d1f",
-        foreground: "#f5f5f7",
-        cursor: "#0071e3",
-        selectionBackground: "#0071e380",
-        black: "#1d1d1f",
-        red: "#ff453a",
-        green: "#30d158",
-        yellow: "#ffd60a",
-        blue: "#0a84ff",
+        background: THEME.background,
+        foreground: THEME.textPrimary,
+        cursor: THEME.brand,
+        selectionBackground: `${THEME.brand}80`,
+        black: THEME.background,
+        red: THEME.danger,
+        green: THEME.success,
+        yellow: THEME.warning,
+        blue: THEME.accent,
         magenta: "#bf5af2",
         cyan: "#64d2ff",
-        white: "#f5f5f7",
-        brightBlack: "#636366",
+        white: THEME.textPrimary,
+        brightBlack: THEME.textMuted,
         brightRed: "#ff6961",
         brightGreen: "#4cd964",
         brightYellow: "#ffe620",
@@ -126,7 +127,7 @@ export function XTerminal({ threadId, workDir }: XTerminalProps) {
     <div
       ref={containerRef}
       className="h-full w-full"
-      style={{ backgroundColor: "#1d1d1f" }}
+      style={{ backgroundColor: THEME.background }}
     />
   );
 }
