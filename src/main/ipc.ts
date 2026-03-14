@@ -3,6 +3,7 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { IPC_CHANNELS } from "../shared/types/ipc";
 import { ProcessManager } from "./managers/ProcessManager";
+import { TerminalManager } from "./managers/TerminalManager";
 import { ThreadManager } from "./managers/ThreadManager";
 import { MoonlightDB } from "./db/database";
 import type { Project } from "../shared/types/project";
@@ -12,6 +13,7 @@ interface IpcDeps {
   db: MoonlightDB;
   threadManager: ThreadManager;
   processManager: ProcessManager;
+  terminalManager: TerminalManager;
   getWindow: () => BrowserWindow | null;
 }
 
@@ -19,6 +21,7 @@ export function registerIpcHandlers({
   db,
   threadManager,
   processManager,
+  terminalManager,
   getWindow,
 }: IpcDeps): void {
   // ── Project ──────────────────────────────────────────────
@@ -148,6 +151,46 @@ export function registerIpcHandlers({
       const client = processManager.get(threadId);
       if (!client) throw new Error(`No active client for thread: ${threadId}`);
       await client.steer(message);
+    },
+  );
+
+  // ── Terminal ──────────────────────────────────────────────
+
+  ipcMain.handle(
+    IPC_CHANNELS.TERMINAL_CREATE,
+    (
+      _event,
+      {
+        termId,
+        workDir,
+        shell,
+      }: { termId: string; workDir: string; shell?: string },
+    ) => {
+      return terminalManager.create(termId, workDir, shell);
+    },
+  );
+
+  ipcMain.on(
+    IPC_CHANNELS.TERMINAL_INPUT,
+    (_event, { termId, data }: { termId: string; data: string }) => {
+      terminalManager.write(termId, data);
+    },
+  );
+
+  ipcMain.on(
+    IPC_CHANNELS.TERMINAL_RESIZE,
+    (
+      _event,
+      { termId, cols, rows }: { termId: string; cols: number; rows: number },
+    ) => {
+      terminalManager.resize(termId, cols, rows);
+    },
+  );
+
+  ipcMain.handle(
+    IPC_CHANNELS.TERMINAL_DESTROY,
+    (_event, { termId }: { termId: string }) => {
+      terminalManager.destroy(termId);
     },
   );
 }

@@ -1,14 +1,17 @@
 import { useCallback } from "react";
 import { useThreadStore } from "../../stores/useThreadStore";
 import { useMessageStore } from "../../stores/useMessageStore";
+import { useLayoutStore } from "../../stores/useLayoutStore";
 import { TabBar } from "./TabBar";
 import { MessageList } from "./MessageList";
 import { InputBar } from "./InputBar";
+import { XTerminal } from "../terminal/XTerminal";
 
 export function ThreadView() {
   const { activeThreadId, threads } = useThreadStore();
   const { messagesByThread, streamingMessage, addUserMessage } =
     useMessageStore();
+  const { terminalVisible, terminalHeight } = useLayoutStore();
 
   const activeThread = threads.find((t) => t.id === activeThreadId);
   const messages = activeThreadId
@@ -46,6 +49,17 @@ export function ThreadView() {
         onSend={handleSend}
         disabled={activeThread.status === "running"}
       />
+      {terminalVisible && activeThread && (
+        <div
+          className="border-t border-border shrink-0"
+          style={{ height: terminalHeight }}
+        >
+          <XTerminal
+            threadId={activeThread.id}
+            workDir={activeThread.workDir}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import os from "node:os";
 import { MoonlightDB } from "./db/database";
 import { ThreadManager } from "./managers/ThreadManager";
 import { ProcessManager } from "./managers/ProcessManager";
+import { TerminalManager } from "./managers/TerminalManager";
 import { registerIpcHandlers } from "./ipc";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -17,6 +18,7 @@ let mainWindow: BrowserWindow | null = null;
 let db: MoonlightDB;
 let threadManager: ThreadManager;
 let processManager: ProcessManager;
+let terminalManager: TerminalManager;
 
 const getWindow = (): BrowserWindow | null => mainWindow;
 
@@ -53,13 +55,21 @@ app.on("ready", () => {
   db = new MoonlightDB(DATA_DIR);
   threadManager = new ThreadManager(db, DATA_DIR);
   processManager = new ProcessManager(threadManager, getWindow);
+  terminalManager = new TerminalManager(getWindow);
 
-  registerIpcHandlers({ db, threadManager, processManager, getWindow });
+  registerIpcHandlers({
+    db,
+    threadManager,
+    processManager,
+    terminalManager,
+    getWindow,
+  });
 
   createWindow();
 });
 
 app.on("window-all-closed", () => {
+  terminalManager.destroyAll();
   processManager.stopAll();
   db.close();
   if (process.platform !== "darwin") {
