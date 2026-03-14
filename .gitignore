@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+out/
+dist/
+.vite/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Electron
+*.asar
+
+# SQLite
+*.db
+*.db-journal
+*.db-wal
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+
+# Packaging
+*.dmg
+*.exe
+*.AppImage
+*.deb
+*.rpm
+*.snap
