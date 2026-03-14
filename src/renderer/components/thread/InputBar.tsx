@@ -1,5 +1,7 @@
 import { useRef, useState, useCallback } from "react";
-import { Send } from "lucide-react";
+import { Send, Paperclip, Loader2 } from "lucide-react";
+import { Button } from "../ui/button";
+import { cn } from "../../lib/utils";
 
 interface InputBarProps {
   onSend: (text: string) => void;
@@ -43,24 +45,55 @@ export function InputBar({ onSend, disabled }: InputBarProps) {
   const canSend = text.trim().length > 0 && !disabled;
 
   return (
-    <div className="border-t border-border p-3 flex items-end gap-2">
-      <textarea
-        ref={textareaRef}
-        value={text}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        disabled={disabled}
-        placeholder="Send a message... (Cmd+Enter to send)"
-        rows={1}
-        className="flex-1 resize-none bg-surface rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary outline-none focus:ring-1 focus:ring-brand"
-      />
-      <button
-        onClick={send}
-        disabled={!canSend}
-        className="p-2 rounded-lg bg-brand text-white disabled:opacity-40 transition-opacity"
+    <div className="p-3">
+      <div
+        className={cn(
+          "rounded-xl border border-border bg-surface transition-all duration-150",
+          "focus-within:ring-1 focus-within:ring-brand focus-within:border-brand",
+        )}
       >
-        <Send size={16} />
-      </button>
+        {disabled && (
+          <div className="flex items-center gap-2 px-3 pt-2 text-xs text-text-muted">
+            <Loader2 size={12} className="animate-spin" />
+            <span>Agent is working...</span>
+          </div>
+        )}
+        <textarea
+          ref={textareaRef}
+          value={text}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          disabled={disabled}
+          placeholder="Send a message..."
+          rows={1}
+          className="w-full resize-none bg-transparent px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted outline-none"
+        />
+        <div className="flex items-center justify-between px-2 pb-2">
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 text-text-muted"
+              disabled
+            >
+              <Paperclip size={14} />
+            </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-text-muted select-none hidden sm:inline">
+              {"\u2318"}Enter
+            </span>
+            <Button
+              onClick={send}
+              disabled={!canSend}
+              size="icon"
+              className="h-7 w-7"
+            >
+              <Send size={14} />
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
