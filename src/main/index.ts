@@ -7,11 +7,6 @@ import { ProcessManager } from "./managers/ProcessManager";
 import { TerminalManager } from "./managers/TerminalManager";
 import { registerIpcHandlers } from "./ipc";
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
-  app.quit();
-}
-
 const DATA_DIR = path.join(os.homedir(), ".moonlight");
 
 let mainWindow: BrowserWindow | null = null;
@@ -37,17 +32,31 @@ const createWindow = () => {
     },
   });
 
-  // In development, load from Vite dev server; in production, load built HTML.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
-    );
-  }
+  const devServerUrl =
+    typeof MAIN_WINDOW_VITE_DEV_SERVER_URL !== "undefined"
+      ? MAIN_WINDOW_VITE_DEV_SERVER_URL
+      : process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL;
+
+  const viteName =
+    typeof MAIN_WINDOW_VITE_NAME !== "undefined"
+      ? MAIN_WINDOW_VITE_NAME
+      : (process.env.MAIN_WINDOW_VITE_NAME ?? "main_window");
+
+  const loadApp = () => {
+    if (devServerUrl) {
+      mainWindow!.loadURL(devServerUrl);
+    } else {
+      mainWindow!.loadFile(
+        path.join(__dirname, `../renderer/${viteName}/index.html`),
+      );
+    }
+  };
+
+  loadApp();
 
   mainWindow.webContents.on("did-fail-load", (_e, code, desc) => {
-    console.error("Failed to load:", code, desc);
+    console.error("Failed to load:", code, desc, "- retrying in 1s...");
+    setTimeout(loadApp, 1000);
   });
 
   mainWindow.webContents.on("render-process-gone", (_e, details) => {
